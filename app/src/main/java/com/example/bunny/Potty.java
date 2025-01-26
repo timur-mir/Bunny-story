@@ -36,7 +36,9 @@ public class Potty {
     }
 
     public void resetPosition() {
-        pottyX = random.nextInt(GameView.dWidth - getPottyWidth());
+        Integer sizeGameView = GameView.dWidth;
+//        pottyX = random.nextInt(sizeGameView - getPottyHeight());
+        pottyX = random.nextInt(700);
         pottyY = -200 + random.nextInt(600) * -1;
         pottyVelocity = 5 + random.nextInt(16);
     }

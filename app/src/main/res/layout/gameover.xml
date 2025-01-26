@@ -13,9 +13,9 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/restart"
+            android:layout_width="140dp"
+            android:layout_height="110dp"
+            android:background="@drawable/yes"
             android:contentDescription="TODO"
             android:onClick="restart" />
 
@@ -25,9 +25,9 @@
             android:layout_weight="1" />
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/exit2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/exit3"
             android:contentDescription="TODO"
             android:onClick="exit" />
     </LinearLayout>
@@ -44,8 +44,12 @@
             android:layout_height="wrap_content"
             android:background="@drawable/honey11"
             android:id="@+id/ivNewHighest"
-            android:visibility="gone"/>
-
+        />
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/road"
+            android:layout_width="300dp"
+            android:layout_height="260dp"
+            android:src="@drawable/finishroad"/>
 
 
     <TableLayout

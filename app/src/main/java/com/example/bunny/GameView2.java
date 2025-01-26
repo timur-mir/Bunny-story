@@ -28,7 +28,7 @@ public class GameView2 extends View {
     Rect rectBackground, rectGround;
     Context context;
     Handler handler;
-    final long UPDATE_MILLIS = 20;
+    final long UPDATE_MILLIS = 50;
     Runnable runnable;
     Paint textPaint = new Paint();
     Paint healthPaint = new Paint();
@@ -36,7 +36,7 @@ public class GameView2 extends View {
     int points = 0;
     float posx = 0;
     float posy = 0;
-    int life = 3;
+    int life = 2;
     int back = 1;
     boolean openDoor = false;
     static int dWidth, dHeight;
@@ -52,7 +52,7 @@ public class GameView2 extends View {
     //ArrayList<Stairs> stAr;
     ArrayList<Explosion> explosions;
     private SoundPool soundPool; // plays sound effects
-    private static final int MAX_STREAMS = 5;
+    private static final int MAX_STREAMS = 3;
     private static final int SOUND_QUALITY = 100;
     private int volume; // sound effect volume
     private Map<Integer, Integer> soundMap; // maps ID to soundpool
@@ -66,10 +66,8 @@ public class GameView2 extends View {
         super(context);
         this.context = context;
         background = BitmapFactory.decodeResource(getResources(), R.drawable.backgroundpart2);
-        //background2 = BitmapFactory.decodeResource(getResources(), R.drawable.forest222n1);
         ground = BitmapFactory.decodeResource(getResources(), R.drawable.forest222n);
         vini = BitmapFactory.decodeResource(getResources(), R.drawable.vini);
-      //  stairP = BitmapFactory.decodeResource(getResources(), R.drawable.st5);
         Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -98,82 +96,37 @@ public class GameView2 extends View {
         explosions = new ArrayList<>();
 
         for (int i = 0; i < 3; i++) {
-           BeeRight beeRight= new BeeRight(context);
+            BeeRight beeRight = new BeeRight(context);
             beeRights.add(beeRight);
         }
         for (int i = 0; i < 2; i++) {
             Potty honeyPotty = new Potty(context);
             pots.add(honeyPotty);
         }
-//        for (int i = 0; i < 1; i++) {
-//            Stairs stairEx = new Stairs(context);
-//            stAr.add(stairEx);
-//        }
 
+        initializeSoundEffects(context);
     }
-
-    public void resume(Context context) {
-        //gamePaused = false;
-        initializeSoundEffects(context); // initialize app's SoundPool
-
-//        if (!dialogDisplayed)
-//            resetGame(); // start the game
-    } // end method resume
+    void setPoints(Integer pointsLevel1){
+        points=pointsLevel1;
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-//        if((Math.round(viniX)>120&&Math.round(viniX)<235)&&(Math.round(viniY)<850&&Math.round(viniY)>550))
-
-
-//        {
-//            @SuppressLint("DrawAllocation") Intent intent = new Intent(context, Part2.class);
-//            intent.putExtra("points", points);
-//            context.startActivity(intent);
-//            ((Activity) context).finish();
-//
-//        }
-//        if (life < 4 && !openDoor && back < 2) {
-          canvas.drawBitmap(background, null, rectBackground, null);
-//            canvas.drawBitmap(ground, null, rectGround, null);
-//
-//        } else if (life > 3 && openDoor && back == 2) {
-//            canvas.drawBitmap(background2, null, rectBackground, null);
-//            canvas.drawBitmap(ground, null, rectGround, null);
-//            canvas.drawBitmap(stairP, 140, 900, null);
-//
-//        }
-
-//        canvas.drawBitmap(ground, null, rectGround, null);
-//        canvas.drawBitmap(stairP,140,900,null);
+        canvas.drawBitmap(background, null, rectBackground, null);
         canvas.drawBitmap(vini, viniX, viniY, null);
-//        if(life==5) {
-//            if (140 + stairP.getWidth() >= viniX
-//                    && 140 <= viniX + vini.getWidth()
-//                    && 900 + stairP.getHeight() >= viniY
-//                    && 900 + stairP.getHeight() <= viniY + vini.getHeight()) {
-//
-//                @SuppressLint("DrawAllocation") Intent intent = new Intent(context, Part2.class);
-//                intent.putExtra("points", points);
-//                context.startActivity(intent);
-//                ((Activity) context).finish();
-//            }
-//        }
+
 
         for (int i = 0; i < beeRights.size(); i++) {
             canvas.drawBitmap(beeRights.get(i).getBee(beeRights.get(i).beeFrame), beeRights.get(i).beeX, beeRights.get(i).beeY, null);
             beeRights.get(i).beeFrame++;
-            if (beeRights.get(i).beeFrame> 1) {
-                beeRights.get(i).beeFrame= 0;
+            if (beeRights.get(i).beeFrame > 1) {
+                beeRights.get(i).beeFrame = 0;
             }
-            beeRights.get(i).beeX+= beeRights.get(i).beeVelocity;
+            beeRights.get(i).beeX += beeRights.get(i).beeVelocity;
             if (beeRights.get(i).beeX + beeRights.get(i).getBeeWidth() >= dWidth) {
-              points += 10;
-//                Explosion explosion = new Explosion(context);
-//                explosion.explosionX = beeRight.get(i).beer;
-//                explosion.explosionY = beeRightstget(i).rinvikY;
-//                explosions.add(explosion);
-               beeRights.get(i).resetPosition();
+                points += 10;
+                beeRights.get(i).resetPosition();
             }
         }
         for (int i = 0; i < pots.size(); i++) {
@@ -183,15 +136,7 @@ public class GameView2 extends View {
                 pots.get(i).pottyFrame = 0;
             }
             pots.get(i).pottyY += pots.get(i).pottyVelocity;
-            //   pots.get(i).resetPosition();
-//            if (pots.get(i).pottyY + pots.get(i).getPottyHeight() >= dHeight - ground.getHeight()) {
-//                points += 50;
-////                Explosion explosion = new Explosion(context);
-////                explosion.explosionX = beeRights.get(i).beer;
-////                explosion.explosionY = beeRights.get(i).rinvikY;
-////                explosions.add(explosion);
-//                pots.get(i).resetPosition();
-//            }
+
         }
 
         //////////////////////////////////////////////////////////////////////////////////
@@ -202,54 +147,32 @@ public class GameView2 extends View {
                     && beeRights.get(i).beeY + beeRights.get(i).getBeeHeight() <= viniY + vini.getHeight()) {
                 points -= 10;
                 life--;
-//                if (life < 4) {
-//                    openDoor = false;
-//                    back = 1;
-//                    viniX = dWidth / 2 - vini.getWidth() / 2;
-//                    viniY = dHeight - ground.getHeight() - vini.getHeight();
-//
-//                }
+
                 beeRights.get(i).resetPosition();
-//                if (life==4) {
-//                    openDoor=true;
-//                    break;
-//
-//                }
-                //  if(life>4) back=1;
-                if (soundPool != null) {
+
+                if (soundPool != null&&life<2) {
                     soundPool.play(HELP_SOUND_ID, volume, volume,
                             SOUND_PRIORITY, 0, 1f);
                 }
-                if (life == 0) {
-                    @SuppressLint("DrawAllocation") Intent intent = new Intent(context, GameOver.class);
+                if (life <1) {
+                    Intent intent = new Intent(context, GameOver.class);
                     intent.putExtra("points", points);
                     context.startActivity(intent);
                     ((Activity) context).finish();
                 }
             }
         }
-//        if(openDoor&&life<4){
-//            viniX = dWidth / 2 - vini.getWidth() / 2;
-//            viniY = dHeight - ground.getHeight() - vini.getHeight();
-//            openDoor=false;
-//        }
         for (int i = 0; i < pots.size(); i++) {
             if (pots.get(i).pottyX + pots.get(i).getPottyWidth() >= viniX
                     && pots.get(i).pottyX <= viniX + vini.getWidth()
                     && pots.get(i).pottyY + pots.get(i).getPottyHeight() >= viniY
                     && pots.get(i).pottyY + pots.get(i).getPottyHeight() <= viniY + vini.getHeight()) {
                 pots.get(i).resetPosition();
-               BeeRight beeR= new BeeRight(context);
+                BeeRight beeR = new BeeRight(context);
                 beeRights.add(beeR);
                 life++;
                 points += 100;
-//                if (life > 3) {
-//                    openDoor = true;
-//                    //break;
-//
-//
-//                }
-                if (soundPool != null)
+                if (soundPool != null&&life>2)
                     soundPool.play(MISS_SOUND_ID, volume, volume,
                             SOUND_PRIORITY, 0, 1f);
 
@@ -259,21 +182,10 @@ public class GameView2 extends View {
             }
         }
 
-//        for (int i = 0; i < explosions.size(); i++) {
-//            canvas.drawBitmap(explosions.get(i).getExplosion(explosions.get(i).explosionFrame), explosions.get(i).explosionX,
-//                    explosions.get(i).explosionY, null);
-//            explosions.get(i).explosionFrame++;
-//            if (explosions.get(i).explosionFrame > 3) {
-//                explosions.remove(i);
-//            }
-//
-//        }
-//        viniX = dWidth / 2 - vini.getWidth() / 2;
-//        viniY = dHeight - ground.getHeight() - vini.getHeight();
         if (life >= 5) {
             healthPaint.setColor(Color.GREEN);
         }
-        if (life ==4 ) {
+        if (life == 4) {
             healthPaint.setColor(Color.MAGENTA);
         }
         if (life == 3) {
@@ -284,58 +196,30 @@ public class GameView2 extends View {
         } else if (life == 1) {
             healthPaint.setColor(Color.RED);
         }
-//        posx = viniX;
-//        posy = viniY;
-//        coord = "" + viniX;
-//        coord2 = "" + viniY;
 
         canvas.drawRect(dWidth - 200, 40, dWidth - 200 + 15 * life, 90, healthPaint);
         canvas.drawText("" + points, 100, TEXT_SIZE, textPaint);
         canvas.drawText("" + life, 260, TEXT_SIZE, textPaint);
 
-        //   canvas.drawText("yrtyry",170,500,textPaint);
-//        canvas.drawText(coord, 140, 120, textPaint);
-//        canvas.drawText(coord2, 140, 170, textPaint);
-
-        // if((viniX>150&&viniX<170)&&(viniY>495&&viniY<500))
-
-
         handler.postDelayed(runnable, UPDATE_MILLIS);
-        // canvas.drawBitmap(vini, viniX, viniY, null);
-        if(life==10) {
-//            if (140 + stairP.getWidth() >= viniX
-//                    && 140 <= viniX + vini.getWidth()
-//                    && 900 + stairP.getHeight() >= viniY
-//                    && 900 + stairP.getHeight() <= viniY + vini.getHeight()) {
-//                destroyDrawingCache();
-//                // destroyDrawingCache();
-//
-//                //   canvas.drawBitmap(background, null, rectBackground, null);
-                @SuppressLint("DrawAllocation") Intent intent = new Intent(context, MainActivity.class);
-                intent.putExtra("points", points);
-                context.startActivity(intent);
-                ((Activity) context).finish();
-
-
+        if (life >4) {
+            Intent intent = new Intent(context, GameOver.class);
+            intent.putExtra("points", points);
+            context.startActivity(intent);
+            ((Activity) context).finish();
         }
-
 
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
-
         float touchX = event.getX();
         float touchY = event.getY();
-
         if (touchY >= viniY || touchY <= viniY) {
             int action = event.getAction();
 
             if (action == MotionEvent.ACTION_DOWN) {
-                if (soundPool != null)
-                    soundPool.play(HIT_SOUND_ID, volume, volume,
-                            SOUND_PRIORITY, 0, 1f);
+
                 oldX = event.getX();
                 oldViniX = viniX;
             }
@@ -349,31 +233,12 @@ public class GameView2 extends View {
                     viniX = dWidth - vini.getWidth();
                 else
                     viniX = newViniX;
-//                if (life > 3 && openDoor == true) {
-//                    back = 2;
-//                    //  openDoor=true;
-//
-//                    viniY = touchY;
-//                }
+
                 viniY = touchY;
 
             }
 
             {
-//                if (action == MotionEvent.ACTION_UP) {
-//
-//                    if (life > 3 && openDoor == true)
-//                    {
-//                        back = 2;
-//                    //  openDoor=true;
-//
-//                        viniY = touchY;
-//                    }
-//                    //  viniY = touchY;
-//                                //  viniY = dHeight - ground.getHeight() - vini.getHeight();
-//
-//                }
-
 
             }
 
@@ -382,37 +247,40 @@ public class GameView2 extends View {
     }
 
     private void initializeSoundEffects(Context context) {
-        // initialize SoundPool to play the app's three sound effects
+
         soundPool = new SoundPool(MAX_STREAMS, AudioManager.STREAM_MUSIC,
                 SOUND_QUALITY);
 
-        // set sound effect volume
         AudioManager manager =
                 (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         volume = manager.getStreamVolume(AudioManager.STREAM_MUSIC);
 
-        // create sound map
         soundMap = new HashMap<Integer, Integer>(); // create new HashMap
 
-        // add each sound effect to the SoundPool
         soundMap.put(HIT_SOUND_ID,
-                soundPool.load(context, R.raw.sova, SOUND_PRIORITY));
+                soundPool.load(context, R.raw.yatuchka, SOUND_PRIORITY));
         soundMap.put(MISS_SOUND_ID,
-                soundPool.load(context, R.raw.mlrmlr, SOUND_PRIORITY));
+                soundPool.load(context, R.raw.nepravpchelyi, SOUND_PRIORITY));
         soundMap.put(HELP_SOUND_ID,
                 soundPool.load(context, R.raw.spasite, SOUND_PRIORITY));
-//        soundMap.put(DISAPPEAR_SOUND_ID,
-//                soundPool.load(context, R.raw.hitgull3, SOUND_PRIORITY));
-//
 
 
-    } // end method initializeSoundEffect
+
+    }
+
+    @Override
+    protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld) {
+        super.onSizeChanged(xNew, yNew, xOld, yOld);
+        if (soundPool != null)
+            soundPool.play(HIT_SOUND_ID, volume, volume,
+                    SOUND_PRIORITY, 0, 1f);
+    }
 
     public void pause() {
-        soundPool.release(); // release audio resources
-        soundPool = null;
+       soundPool.release();
+     soundPool = null;
 
-    } // en
+    }
 
 }
 

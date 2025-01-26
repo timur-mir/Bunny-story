@@ -34,7 +34,7 @@ public class BeeRight {
     public void resetPosition() {
       //  beeX = random.nextInt(GameView.dWidth-getBeeWidth());
        // beeY = -200+random.nextInt(600)*-1;
-        beeY= random.nextInt(GameView.dHeight-getBeeHeight());
+        beeY= random.nextInt(GameView2.dHeight-getBeeHeight());
         beeX = random.nextInt(2);
        beeVelocity=4+random.nextInt(12);
     }

@@ -32,7 +32,8 @@ public class Rinvik {
         return rinvik[0].getHeight();
     }
     public void resetPosition() {
-        rinvikX = random.nextInt(GameView.dWidth-getRinvikWidth());
+     //   rinvikX = random.nextInt(GameView.dWidth-getRinvikWidth());
+        rinvikX = random.nextInt(700);
         rinvikY = -200+random.nextInt(600)*-1;
         rinvikVelocity=5+random.nextInt(16);
     }

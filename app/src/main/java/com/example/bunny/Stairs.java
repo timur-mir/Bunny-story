@@ -22,11 +22,11 @@ public class Stairs {
         return stairs[stairsFrame];
 
     }
-    public int getRinvikWidth(){
+    public int getStairWidth(){
         return stairs[0].getWidth();
 
     }
-    public int getRinvikheight(){
+    public int getStairHeight(){
         return stairs[0].getHeight();
     }
     public void resetPosition() {
