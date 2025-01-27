@@ -228,7 +228,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                             if (life == 0) {
                                 @SuppressLint("DrawAllocation")
                                 Intent intent = new Intent(MyApplication.getInstance(), GameOver.class);
-                                intent.putExtra("points", points);
+                                intent.putExtra("points", 0);
                                 context.startActivity(intent);
                                 ((Activity) context).finish();
                             }

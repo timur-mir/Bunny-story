@@ -148,7 +148,7 @@ public class GameView2 extends View {
                 }
                 if (life <1) {
                     Intent intent = new Intent(context, GameOver.class);
-                    intent.putExtra("points", points);
+                    intent.putExtra("points", 0);
                     context.startActivity(intent);
                     ((Activity) context).finish();
                 }
