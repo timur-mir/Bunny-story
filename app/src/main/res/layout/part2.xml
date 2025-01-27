@@ -20,12 +20,17 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingClass" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button"
-        android:layout_width="wrap_content"
+        android:layout_width="182dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="44dp"
-        android:text="Старт"
+        android:gravity="center"
+        android:padding="0dp"
+        android:background="@drawable/mybutton"
+        android:textColor="#fff"
+        android:textSize="32sp"
+        android:text="Поехали!"
         android:onClick="startGame"
         app:layout_constraintBottom_toBottomOf="@+id/gifImageView"
         app:layout_constraintEnd_toEndOf="parent"

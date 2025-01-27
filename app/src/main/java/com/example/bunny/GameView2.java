@@ -24,34 +24,26 @@ import java.util.Map;
 import java.util.Random;
 
 public class GameView2 extends View {
-    Bitmap background, background2, ground, vini, stairP;
+    Bitmap background, ground, vini;
     Rect rectBackground, rectGround;
     Context context;
     Handler handler;
-    final long UPDATE_MILLIS = 50;
+    final long UPDATE_MILLIS = 20;
     Runnable runnable;
     Paint textPaint = new Paint();
     Paint healthPaint = new Paint();
     float TEXT_SIZE = 60;
     int points = 0;
-    float posx = 0;
-    float posy = 0;
     int life = 2;
-    int back = 1;
-    boolean openDoor = false;
     static int dWidth, dHeight;
-    String coord = "";
-    String coord2 = "";
     Random random;
     float viniX, viniY;
-    float stx, sty;
     float oldX;
     float oldViniX;
     ArrayList<BeeRight> beeRights;
     ArrayList<Potty> pots;
-    //ArrayList<Stairs> stAr;
     ArrayList<Explosion> explosions;
-    private SoundPool soundPool; // plays sound effects
+    private SoundPool soundPool;
     private static final int MAX_STREAMS = 3;
     private static final int SOUND_QUALITY = 100;
     private int volume; // sound effect volume
@@ -172,7 +164,7 @@ public class GameView2 extends View {
                 beeRights.add(beeR);
                 life++;
                 points += 100;
-                if (soundPool != null&&life>2)
+                if (soundPool != null&&life%2==0)
                     soundPool.play(MISS_SOUND_ID, volume, volume,
                             SOUND_PRIORITY, 0, 1f);
 
@@ -202,7 +194,7 @@ public class GameView2 extends View {
         canvas.drawText("" + life, 260, TEXT_SIZE, textPaint);
 
         handler.postDelayed(runnable, UPDATE_MILLIS);
-        if (life >4) {
+        if (life >7) {
             Intent intent = new Intent(context, GameOver.class);
             intent.putExtra("points", points);
             context.startActivity(intent);

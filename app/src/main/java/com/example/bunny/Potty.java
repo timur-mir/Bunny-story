@@ -1,5 +1,7 @@
 package com.example.bunny;
 
+import static java.lang.Math.abs;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -36,11 +38,17 @@ public class Potty {
     }
 
     public void resetPosition() {
-        Integer sizeGameView = GameView.dWidth;
-//        pottyX = random.nextInt(sizeGameView - getPottyHeight());
-        pottyX = random.nextInt(700);
-        pottyY = -200 + random.nextInt(600) * -1;
-        pottyVelocity = 5 + random.nextInt(16);
+        if(DrawView.dWidth>0) {
+            pottyX = random.nextInt(DrawView.dWidth - getPottyHeight());
+            pottyY = -200 + random.nextInt(600) * -1;
+            pottyVelocity = 5 + random.nextInt(10);
+        }
+        else
+        {
+            pottyX = random.nextInt(GameView2.dWidth - getPottyHeight());
+            pottyY = -200 + random.nextInt(600) * -1;
+            pottyVelocity = 5 + random.nextInt(10);
+        }
     }
 
 }

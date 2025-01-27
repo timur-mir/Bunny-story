@@ -28,7 +28,7 @@ import java.util.Random;
 public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
     private DrawThread drawThread;
     /////////////////////////////////////////
-    Bitmap background, background2, background3, ground, vini, stairP;
+    Bitmap background, background2, background3, ground, vini, stairP,pyatochok;
     Rect rectBackground, rectGround;
     Context context;
     Paint textPaint = new Paint();
@@ -45,13 +45,12 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
     String coord2 = "";
     Random random;
     float viniX, viniY;
+    float pyatochokX, pyatochokY;
     float stx, sty;
     float oldX;
     float oldViniX;
     ArrayList<Rinvik> rinviks;
     ArrayList<Potty> pots;
-    //ArrayList<Stairs> stAr;
-    Explosion explosion;
     ArrayList<Explosion> explosions;
     private SoundPool soundPool; // plays sound effects
     private static final int MAX_STREAMS = 3;
@@ -73,6 +72,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         background3 = BitmapFactory.decodeResource(getResources(), R.drawable.forest222n12);
         ground = BitmapFactory.decodeResource(getResources(), R.drawable.trground);
         vini = BitmapFactory.decodeResource(getResources(), R.drawable.vini);
+        pyatochok=BitmapFactory.decodeResource(getResources(), R.drawable.pyatochok2);
         stairP = BitmapFactory.decodeResource(getResources(), R.drawable.st5);
         Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -91,7 +91,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         viniX = dWidth / 2 - vini.getWidth() / 2;
         viniY = dHeight - ground.getHeight() - vini.getHeight();
 
-        explosion = new Explosion(context);
+//        explosion = new Explosion(context);
         rinviks = new ArrayList<>();
         pots = new ArrayList<>();
         explosions = new ArrayList<>();
@@ -148,7 +148,14 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
             Canvas canvas;
             while (running) {
                 canvas = null;
-                try {
+
+                    try {
+                        Thread.sleep(20);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
                     canvas = surfaceHolder.lockCanvas(null);
                     if (canvas == null)
                         continue;
@@ -161,6 +168,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
                         canvas.drawBitmap(background3, null, rectBackground, null);
                         canvas.drawBitmap(ground, null, rectGround, null);
+                        canvas.drawBitmap(pyatochok, 60, 700, null);
                     }
 
                     canvas.drawBitmap(vini, viniX, viniY, null);
@@ -175,6 +183,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                         if (rinviks.get(i).rinvikY + rinviks.get(i).getRinvikheight() >
                                 dHeight - ground.getHeight())
                         {
+                            Explosion  explosion = new Explosion(context);
                             points += 10;
                             explosion.explosionX = rinviks.get(i).rinvikX;
                             explosion.explosionY = rinviks.get(i).rinvikY;
@@ -250,7 +259,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
                     //////////////////////////////////////////
 
-                    for (int i = 0; i < ((explosions.size())-1); i++) {
+                    for (int i = 0; i < ((explosions.size())); i++) {
                         canvas.drawBitmap(explosions.get(i).getExplosion(explosions.get(i).explosionFrame), explosions.get(i).explosionX,
                                 explosions.get(i).explosionY, null);
                         explosions.get(i).explosionFrame++;
@@ -278,21 +287,18 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     }
                     posx = viniX;
                     posy = viniY;
-                    coord = "" + viniX;
+                    coord = "" +viniX;
                     coord2 = "" + viniY;
 
                     canvas.drawRect(dWidth - 200, 30, dWidth - 200 + 15 * life, 80, healthPaint);
                     canvas.drawText("" + points, 100, TEXT_SIZE, textPaint);
                     canvas.drawText("" + life, 260, TEXT_SIZE, textPaint);
-
                     // Взаимодействие винни и лестницы
                     if(life>=5) {
-                        if (130 + stairP.getWidth() >= viniX
-                                && 130 <= viniX + vini.getWidth()
-                                && 630 + stairP.getHeight() >= viniY
-                                && 630 + stairP.getHeight() <= viniY + vini.getHeight()) {
-                          //  destroyDrawingCache();
-                            setWillNotDraw(true);
+                        if (240 + pyatochok.getWidth()>= viniX
+                                && 240 <= viniX + vini.getWidth()
+                                && 600+ pyatochok.getHeight() >= viniY
+                                && 600+ pyatochok.getHeight()  <= viniY + vini.getHeight()) {
                             Intent intent = new Intent(context, Part2.class);
                             intent.putExtra("points", points);
                             context.startActivity(intent);

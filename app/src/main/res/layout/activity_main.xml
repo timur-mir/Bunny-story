@@ -13,7 +13,6 @@
         android:id="@+id/title"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -34,14 +33,16 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingClass" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/vini"
-        android:layout_width="wrap_content"
+        android:layout_width="182dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="552dp"
+        android:gravity="center"
+        android:padding="0dp"
         android:background="@drawable/mybutton"
-        android:text="Старт"
-        android:textColor="#D39D9D"
+        android:text="Поехали!"
+        android:textColor="#fff"
         android:textSize="32sp"
         android:onClick="startGame"
         app:layout_constraintEnd_toEndOf="parent"

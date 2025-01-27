@@ -14,7 +14,7 @@
 
         <ImageButton
             android:layout_width="140dp"
-            android:layout_height="110dp"
+            android:layout_height="114dp"
             android:background="@drawable/yes"
             android:contentDescription="TODO"
             android:onClick="restart" />
