@@ -22,6 +22,7 @@ import android.view.SurfaceHolder;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -33,6 +34,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
     Context context;
     Paint textPaint = new Paint();
     Paint healthPaint = new Paint();
+    AudioManager manager;
     float TEXT_SIZE = 60;
     int points = 0;
     float posx = 0;
@@ -146,6 +148,8 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         @Override
         public void run() {
             Canvas canvas;
+            soundPool.play(SOVA_SOUND_ID, volume, volume,
+                    SOUND_PRIORITY, 0, 1f);
             while (running) {
                 canvas = null;
 
@@ -221,7 +225,7 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                             rinviks.get(i).resetPosition();
 
 
-                            if (soundPool != null&&life<1) {
+                            if (soundPool != null&&life%2==0) {
                                 soundPool.play(HELP_SOUND_ID, volume, volume,
                                         SOUND_PRIORITY, 0, 1f);
                             }
@@ -295,8 +299,8 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
                     canvas.drawText("" + life, 260, TEXT_SIZE, textPaint);
                     // Взаимодействие винни и лестницы
                     if(life>=5) {
-                        if (240 + pyatochok.getWidth()>= viniX
-                                && 240 <= viniX + vini.getWidth()
+                        if (180 + pyatochok.getWidth()>= viniX
+                                && 180 <= viniX + vini.getWidth()
                                 && 600+ pyatochok.getHeight() >= viniY
                                 && 600+ pyatochok.getHeight()  <= viniY + vini.getHeight()) {
                             Intent intent = new Intent(context, Part2.class);
@@ -322,6 +326,10 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
         if (touchY >= viniY || touchY <= viniY) {
             int action = event.getAction();
             if (action == MotionEvent.ACTION_DOWN) {
+                if(life ==1){
+                    soundPool.play(SOVA_SOUND_ID, volume, volume,
+                            SOUND_PRIORITY, 0, 1f);
+                }
                 oldX = event.getX();
                 oldViniX = viniX;
             }
@@ -345,5 +353,36 @@ public class DrawView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
         return true;
+    }
+    @Override
+    protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld) {
+        super.onSizeChanged(xNew, yNew, xOld, yOld);
+
+    }
+    public void resume(Context context) {
+        initializeSoundEffects(context);
+    }
+
+    public void pause() {
+        if(soundPool!=null) {
+            soundPool.release();
+            soundPool = null;
+        }
+    }
+    private void initializeSoundEffects(Context context) {
+        soundPool = new SoundPool(MAX_STREAMS, AudioManager.STREAM_MUSIC,
+                SOUND_QUALITY);
+        manager =
+                (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        volume = manager.getStreamVolume(AudioManager.STREAM_MUSIC);
+
+        soundMap = new HashMap<Integer, Integer>(); // create new HashMap
+
+        soundMap.put(SOVA_SOUND_ID,
+                soundPool.load(context, R.raw.sova, SOUND_PRIORITY));
+        soundMap.put(GLORY_POTTY_SOUND_ID,
+                soundPool.load(context, R.raw.glorypotty, SOUND_PRIORITY));
+        soundMap.put(HELP_SOUND_ID,
+                soundPool.load(context, R.raw.spasite, SOUND_PRIORITY));
     }
 }

@@ -11,8 +11,9 @@ import android.view.WindowManager;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-   DrawView gameView = null;
+    DrawView gameView = null;
     private MediaPlayer musPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,25 +21,25 @@ public class MainActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         Objects.requireNonNull(getSupportActionBar()).hide();
         gameView = new DrawView(this);
-        musPlayer= MediaPlayer.create(getApplicationContext(),R.raw.podhodyaschayakompaniya);
+        musPlayer = MediaPlayer.create(getApplicationContext(), R.raw.podhodyaschayakompaniya);
         musPlayer.start();
     }
 
     public void startGame(View view) {
         musPlayer.stop();
         setContentView(gameView);
-       // gameView.resume(this);
+        gameView.resume(this);
     }
+
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         super.onPause();
-     // gameView.pause(); // release resources held by the View
-    } // end method onPause
+        gameView.pause();
+    }
+
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         super.onDestroy();
-      //  gameView.pause(); // release resources held by the View
+        gameView.pause();
     }
 }
